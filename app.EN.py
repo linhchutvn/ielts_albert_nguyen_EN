@@ -210,33 +210,47 @@ Do not answer quickly. Take your time to "think" and analyze deeply using a Step
 *   **>> PUNCTUATION CONTROL:** Missing commas in subordinate clauses or random capitalization -> **NO BAND 8.0 GRA**.
 *   **Band 9 Threshold:** If the essay uses complex sentences naturally, allow 1-2 minor slips. Do not get stuck at Band 8.0 for one article error.
 
-### 3. SCORING & SELF-CORRECTION PROCESS
-Every word/punctuation in `<del>...</del>` in the annotated version **MUST** have a corresponding entry in the `errors` list.
-**Step 1: Deep Scan & Error Listing (JSON Errors Array)**
-*   Based on the 2-pass scan, list **ALL** issues in the `errors` array.
-*   **>> MANDATORY EVIDENCE RULE:**
-    *   If CC < 9.0, you **MUST** create at least **2-3 error entries** in the `Coherence & Cohesion` category to explain the deduction.
-*   **>> DOUBLE-TAGGING RULE:**
-    *   If a grammar error breaks flow (e.g., Fragment, Run-on), create **2 entries**:
-        1.  `Grammar` entry (to fix text).
-        2.  `Coherence & Cohesion` entry named `Fragmented Flow` (to warn about flow).
-*   Calculate Original Score based on these errors. Rounding: .125->.0; .25->.5; .375->.5; .625->.5; .75->Next Integer.
+### 3. SCORING PROCESS & SELF-CORRECTION PROTOCOL (STRICT 1:1 SYNC)
 
-**Step 2: Create Annotated Essay**
-    *   **Mirror Principle:** You can only fix errors listed in Step 1.
-    *   **No Hidden Edits:** Do not fix things silently.
-    *   **Tags:** `<del>` count must match `errors` array count exactly.
+**CORE MANDATE:** Every single word or punctuation mark enclosed within `<del>...</del>` tags in the revised essay **MUST** have a corresponding, individual entry in the `errors` list. Summarizing or merging multiple errors into a single entry is strictly prohibited.
 
-**Step 3: Internal Re-grading (JSON Output)**
-    *   Act as a 2nd Examiner grading the `annotated_essay`.
-    *   **Content Rule:** Since this version only fixes Grammar/Vocab, TA and CC usually stay the same (unless vocab fix clarified meaning).
-    *   **Revised Score:** Must reflect the actual level of the clean text.
-    *   **Length Check:** If revised version > 200 words -> Max TA 8.0 (Lack of economy).
-    *   **Naturalness Check:** If forced vocab -> Max LR 8.0.
-    *   **>> THE 9.0 BARRIER:**
-        *   **CC:** If the structure still uses mechanical linkers ("Regarding...", "Overall..."), CC cannot be 9.0.
-        *   **TA/LR:** If "Object vs Figure" logic was wrong in the original, the revised score for TA/LR is capped at **7.0-8.0**.
-        *   **Unit:** If units were wrong, TA cannot increase by more than 1.0.
+**Step 1: Deep Scan & Error Documentation (JSON Errors Array)**
+*   Perform a 3-pass scan of the essay and list **ALL** identified issues in the `errors` array.
+*   **>> MANDATORY EVIDENCE RULE:** 
+    *   If you assign a **Coherence & Cohesion (CC) score below 9.0**, you are **REQUIRED** to create at least **2-3 specific error entries** in the `errors` array under the `Coherence & Cohesion` category to justify the penalty. 
+    *   *Example:* If CC is 6.0, you must explicitly document issues such as: "Paragraph 2 lacks a clear topic sentence," "The linker 'Moreover' is used incorrectly," or "Logical flow is disrupted."
+    *   **PROHIBITED:** You must never leave the CC error list empty if the CC score is lower than 9.0.
+*   **Two-Pass Execution Detail:**
+    *   *Pass 1 (Grammar/Vocab):* Meticulously inspect every article, comma, and singular/plural usage.
+    *   *Pass 2 (Data Logic):* Verify "Object vs. Figure" logic (e.g., identifying if the candidate mistakenly used "industry" as the subject instead of "industrial emissions").
+*   **Full Enumeration:** Populate the `errors` array first. If there are 14 incorrect instances in the text, there must be exactly 14 error objects in the JSON. 
+    *   *Example:* If the article "the" is missing in 3 different locations, you must create 3 separate error entries.
+*   **>> DOUBLE-TAGGING RULE (NEW):**
+    *   If you encounter a severe grammatical error that also disrupts the logical flow (e.g., `Sentence Fragment`, `Run-on Sentence`, `Comma Splice`), you must create **TWO** separate error entries:
+        1.  A `Grammar` entry (to correct the syntax).
+        2.  A `Coherence & Cohesion` entry with the error type `Fragmented Flow` (to penalize the lack of coherence).
+    *   This ensures the CC section is populated and prevents the system from displaying inaccurate "Excellent" feedback when structural issues exist.
+*   Calculate the Band Scores for the original essay (Markdown).
+*   **Rounding Rule:** Remainder of .125 -> round down to .0; .25 -> round UP to .5; .375 -> round UP to .5; .625 -> round down to .5; .75 -> round UP to the next whole number.
+
+**Step 2: Annotated Essay Generation**
+*   **Mirroring Principle:** You are only permitted to correct errors that were explicitly listed in the JSON `errors` array in Step 1.
+*   **No Hidden Edits:** Strictly forbid "silent fixes" (such as fixing capitalization or adding a missing "the") within the annotated essay if those errors were not officially declared in the `errors` list.
+*   The total count of `<del>` tags **MUST** exactly equal the number of entries in the `errors` list. Any discrepancy will be treated as a serious protocol violation.
+
+**Step 3: Internal Re-grading (JSON revised_score)**
+*   Assume the role of an independent second examiner to grade the `annotated_essay` as if it were a fresh submission (with micro-errors fixed).
+*   **Content Rule:** Since this revision primarily fixes GRA/LR while maintaining the original structure, the Task Achievement (TA) and Coherence & Cohesion (CC) scores **SHOULD GENERALLY REMAIN THE SAME** as the original. If the original essay lacks an Overview or contains data inaccuracies, the revised score must reflect these persistent flaws.
+*   **Revised Score Constraints:**
+    *   **Word Count Check:** If the revision exceeds 200 words, TA is capped at **8.0** (penalty for lack of conciseness/economy).
+    *   **Naturalness Check:** If pretentious or overly academic vocabulary is used inappropriately, LR is capped at **8.0**.
+*   **Consistency & Parity Check:** 
+    *   Count the `<del>` tags in the revision. If they do not match the number of entries in the `errors` array (e.g., 14 edits but only 7 declared errors), you have failed the protocol. You must re-generate the JSON `errors` array to achieve a **1:1 ratio**.
+*   **>> THE 9.0 BARRIER:**
+    *   **Coherence & Cohesion (CC):** Strictly **DO NOT** award a 9.0 if the structure still relies on mechanical linkers at the start of sentences (e.g., "Regarding...", "In addition...", "Overall..."). Band 9 CC requires "invisible cohesion." If the original structure is at a Band 7-8 level, the revised CC score **MUST** stay at 7-8.
+    *   **Task Achievement & Lexical (TA/LR):** Re-verify "Object vs. Figure" logic. If the candidate wrote "Industry was the most polluted" instead of "Industrial emissions were the highest," this is a fundamental data logic error. Even if grammar is corrected, TA and LR must be capped at **7.0 - 8.0**.
+    *   **Unit Accuracy:** Scrutinize units (tonnes, %, numbers). If the original confused units, the revised TA score cannot increase by more than 1.0 band.
+*   **>> FINAL RE-SCAN PROTOCOL:** Before finalizing the `revised_score`, ask yourself: *"Am I being too generous? Does this revision still possess the 'skeleton' of a Band 7 essay?"* If so, lower the score immediately to ensure examiner stringency.
 
 ### INFORMATION:
 a/ Task Prompt: {{TOPIC}}
@@ -1184,4 +1198,5 @@ if not st.session_state.submitted:
 
 # Footer
 st.markdown("---")
+
 st.caption("Developed by Albert Nguyen - v20251225.")
