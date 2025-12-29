@@ -263,7 +263,11 @@ Do not provide a quick response. Take your time to "think" and perform a step-by
         2.  A `Coherence & Cohesion` entry with the error type `Fragmented Flow` (to penalize the lack of coherence).
     *   This ensures the CC section is populated and prevents the system from displaying inaccurate "Excellent" feedback when structural issues exist.
 *   Calculate the Band Scores for the original essay (Markdown).
-*   **Rounding Rule:** Remainder of .125 -> round down to .0; .25 -> round UP to .5; .375 -> round UP to .5; .625 -> round down to .5; .75 -> round UP to the next whole number.
+*   **Rounding Rule for Individual Writing Task Scores (Strict):**
+    *   The final score is rounded to the nearest half-band (.0 or .5).
+    *   **CRITICAL EXCEPTIONS:**
+        *   An average ending in **.25** is STRICTLY rounded **DOWN** to the nearest whole number (e.g., 8.25 -> 8.0).
+        *   An average ending in **.75** is STRICTLY rounded **DOWN** to the nearest half-band (e.g., 8.75 -> 8.5).
 
 **Step 2: Annotated Essay Generation**
 *   **Mirroring Principle:** You are only permitted to correct errors that were explicitly listed in the JSON `errors` array in Step 1.
@@ -1290,6 +1294,7 @@ if not st.session_state.submitted:
 st.markdown("---")
 
 st.caption("Developed by Albert Nguyen - v20251225.")
+
 
 
 
