@@ -123,7 +123,7 @@ GRADING_PROMPT_TEMPLATE = """
 
 Please assume the role of an **IELTS Examiner with 30 years of experience at the British Council**, specializing in exam design and grading for IELTS Writing Task 1. Your mission is to grade the following submission based on the official Band 9.0 criteria with absolute strictness and precision.
 
-**Exam Classification (Context Awareness):** You must correctly identify whether the submission is **IELTS Academic** (Charts, Graphs, Processes, or Maps) or **General Training** (Letters) and apply the corresponding set of Band Descriptors accordingly.
+**Exam Classification (Context Awareness):** You must correctly identify whether the submission is **IELTS Academic** (Charts, Graphs, Processes, or Maps) and apply the corresponding set of Band Descriptors accordingly.
 
 **SPECIAL REQUIREMENT (DEEP SCRUTINY MODE):**
 Do not provide a quick response. Take your time to "think" and perform a step-by-step, highly detailed analysis.
@@ -343,7 +343,10 @@ When providing correction examples or rewrites, you must align them with the **c
     *   *Candidate’s Original (Issue):* "[Quote exact phrase]"
     *   *Proposed Rewrite (Natural Flow):* "[If Band < 7: Fix for ACCURACY. If Band 7+: Rewrite using advanced cohesive structures for Band 9]."
     *   *Explanation:* "[Why is the new version more professional?]"
-*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 1. Quote error, 2. Descriptor-based reason, 3. Impact on communication.
+*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 
+    1. Quote error.
+    2. Descriptor-based reason.
+    3. Impact on communication.
 
 > **📍 Coherence & Cohesion Score:** [Score/9.0]
 
@@ -359,7 +362,10 @@ When providing correction examples or rewrites, you must align them with the **c
     *   *Suggested replacements:* 
         *   *[For Band < 7]:* Basic but accurate (rise, growth, climb).
         *   *[For Band 7+]:* Academic/Sophisticated (escalate, upsurge, register a growth).
-*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 1. Quote error, 2. Descriptor-based reason, 3. Impact on communication.
+*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 
+    1. Quote error. 
+    2. Descriptor-based reason. 
+    3. Impact on communication.
 
 > **📍 Lexical Resource Score:** [Score/9.0]
 
@@ -375,7 +381,10 @@ When providing correction examples or rewrites, you must align them with the **c
     *   *Upgraded Version:* 
         *   *[For Band < 7]:* Combine into a clear complex sentence using *because, although, or which*.
         *   *[For Band 7+]:* Transform using advanced grammar (Inversion, Participle Phrases, or Nominalization).
-*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 1. Quote error, 2. Descriptor-based reason, 3. Impact on communication.
+*   **Mandatory Depth Requirement:** For every error, follow the 3-step explanation: 
+    1. Quote error. 
+    2. Descriptor-based reason. 
+    3. Impact on communication.
 
 > **📍 Grammatical Range & Accuracy Score:** [Score/9.0]
 
@@ -407,45 +416,40 @@ Must extract data into a single **JSON Object**.
 **C. [VOCABULARY] - Lexical Errors:**
 `Imprecise Word Choice`, `Incompatible Collocation`, `Word Form Error`, `Selectional Restriction Violation`, `Informal Register`, `Pretentious Language`, `Redundancy`, `Forced Paraphrasing`.
 
-**CATEGORY MAPPING RULE:**
-*   Group A -> `category`: "Coherence & Cohesion"
-*   Group B -> `category`: "Grammar"
-*   Group C -> `category`: "Vocabulary"
-
-**INTERNAL RE-GRADING:**
-   - Act as 2nd Examiner.
-   - **Revised Score:** Real score of the clean essay. NOT automatically 9.0.
-   - If Original TA=6.0 due to missing data, Revised TA is still 6.0-7.0.
+**INTERNAL RE-GRADING OF REVISED ESSAY (MOST CRITICAL STEP):**
+   - Forget that you just corrected this essay. Assume the role of a second, independent Examiner grading the newly generated 'annotated_essay'.
+   - **Content Rule:** The revised version only corrects Grammar/Vocabulary; it CANNOT fix original errors related to missing data or a lack of comparison. If the original TA was 6.0, the revised TA remains at 6.0 (or at most 7.0 if clarity is significantly improved).
+   - **Conclusion:** The 'revised_score' MUST be the actual score of the revised essay; it MUST NOT default to 9.0.
 
 JSON Structure:
 ```json
 {
   "original_score": {
-      "task_achievement": "Score",
-      "cohesion_coherence": "Score",
-      "lexical_resource": "Score",
-      "grammatical_range": "Score",
-      "overall": "Score"
+      "task_achievement": "TA score of the original essay (User's essay)",
+      "cohesion_coherence": "CC score of the original essay",
+      "lexical_resource": "LR score of the original essay",
+      "grammatical_range": "GRA score of the original essay",
+      "overall": "Overall score of the original essay (Average)"
   },
   "errors": [
     {
-      "category": "Grammar" | "Vocabulary" | "Coherence & Cohesion",
-      "type": "Taxonomy Name",
+      "category": "Grammar" or "Vocabulary",
+      "type": "Error Type",
       "impact_level": "High" | "Medium" | "Low",
-      "explanation": "Brief explanation in English.",
-      "original": "wrong text",
-      "correction": "CORRECT TEXT (UPPERCASE)"
+      "explanation": "Brief explanation of the error.",
+      "original": "the incorrect text snippet",
+      "correction": "the correct text snippet (IN ALL CAPS)"
     }
   ],
-  "annotated_essay": "Annotated text with <del> and <ins> tags.",
+  "annotated_essay": "The revised version of the essay (maintaining original paragraph structure). Wrap incorrect words in <del>...</del> tags and corrected words in <ins class='grammar'>...</ins> or <ins class='vocab'>...</ins> tags. The corrected content must be IN ALL CAPS.",
    "revised_score": {
-      "word_count_check": "e.g., '235 words - Acceptable'",
-      "logic_re_evaluation": "Reasoning for the revised score.",
-      "task_achievement": "Score",
-      "cohesion_coherence": "Score",
-      "lexical_resource": "Score",
-      "grammatical_range": "Score",
-      "overall": "Score"
+      "word_count_check": "MANDATORY: STATE THE WORD COUNT OF THE REVISED ESSAY (e.g., '235 words - Too long')",
+      "logic_re_evaluation": "Explain any score deductions (e.g., 'Despite being grammatically flawless, the essay is 235 words long, violating the principle of conciseness, thus TA is capped at 8.0').",
+      "task_achievement": "The actual TA score (penalize heavily for wordiness)",
+      "cohesion_coherence": "CC score",
+      "lexical_resource": "LR score",
+      "grammatical_range": "GRA score",
+      "overall": "Average score (rounded according to IELTS rules)"
   }
 }
 ```
@@ -1278,4 +1282,5 @@ if not st.session_state.submitted:
 st.markdown("---")
 
 st.caption("Developed by Albert Nguyen - v20251225.")
+
 
