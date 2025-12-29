@@ -233,6 +233,14 @@ Do not provide a quick response. Take your time to "think" and perform a step-by
     *   Identify the opening sentence. Converting a Noun Phrase (the number of...) into a Noun Clause (how many...) is a hallmark of **Band 8.0+ GRA**.
 *   **Band 9 Threshold:** If the writing uses natural, complex structures, allow 1-2 minor slips. Do not cap at 8.0 for a single article error.
 *   **>> "SLIPS" PRINCIPLE:** Band 9.0 GRA allows for "rare minor errors." If the candidate uses a wide range of complex structures naturally, do not hesitate to award a 9.0 despite 1 or 2 slips. Avoid mechanical capping at 8.0.
+*   **>> "PREPOSITION MICRO-SCANNING" PROTOCOL (Critical Preposition Scrutiny):**
+    *   After scanning the entire text, you must perform a **second pass** dedicated solely to identifying preposition errors associated with figures and trends.
+    *   **To:** Used for the final endpoint or destination (e.g., "recovered **to** 15%").
+    *   **At:** Used for a static point or fixed level (e.g., "stood **at** 10%").
+    *   **Of:** Used to specify the value of a noun (e.g., "a level **of** 15%").
+    *   **In:** Used for years (e.g., "**in** 2015").
+    *   **By:** Used to indicate the margin of change (e.g., "decreased **by** 5%").
+    *   **MANDATORY:** If the candidate misuses any preposition in the cases above (for example, using "at" or "by" instead of "to"), you must flag it as a **"Preposition Error"** and clearly explain the usage rule. This is a basic but heavily penalized error.
 
 ### 3. SCORING PROCESS & SELF-CORRECTION PROTOCOL (STRICT 1:1 SYNC)
 
@@ -1282,5 +1290,6 @@ if not st.session_state.submitted:
 st.markdown("---")
 
 st.caption("Developed by Albert Nguyen - v20251225.")
+
 
 
