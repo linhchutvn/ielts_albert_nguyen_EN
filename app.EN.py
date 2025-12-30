@@ -402,7 +402,11 @@ When providing correction examples or rewrites, you must align them with the **c
 
 ---
 
-### **OVERALL BAND SCORE:** [Apply the .25/.75 rounding rule]
+### **OVERALL BAND SCORE:** Rounding Rule for Individual Writing Task Scores (Strict):
+    *   The final score is rounded to the nearest half-band (.0 or .5).
+    *   **CRITICAL EXCEPTIONS:**
+        *   An average ending in **.25** is STRICTLY rounded **DOWN** to the nearest whole number (e.g., 8.25 -> 8.0).
+        *   An average ending in **.75** is STRICTLY rounded **DOWN** to the nearest half-band (e.g., 8.75 -> 8.5).
 
 ---
 
@@ -461,7 +465,11 @@ JSON Structure:
       "cohesion_coherence": "CC score",
       "lexical_resource": "LR score",
       "grammatical_range": "GRA score",
-      "overall": "Average score (rounded according to IELTS rules)"
+      "overall": "Average score (Rounding Rule for Individual Writing Task Scores):
+        *   The final score is rounded to the nearest half-band (.0 or .5).
+        *   **CRITICAL EXCEPTIONS:**
+            *   An average ending in **.25** is STRICTLY rounded **DOWN** to the nearest whole number (e.g., 8.25 -> 8.0).
+            *   An average ending in **.75** is STRICTLY rounded **DOWN** to the nearest half-band (e.g., 8.75 -> 8.5).)"
   }
 }
 ```
@@ -1294,6 +1302,7 @@ if not st.session_state.submitted:
 st.markdown("---")
 
 st.caption("Developed by Albert Nguyen - v20251225.")
+
 
 
 
